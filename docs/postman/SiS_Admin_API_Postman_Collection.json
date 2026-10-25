@@ -1,0 +1,796 @@
+{
+	"info": {
+		"_postman_id": "sis-admin-api-collection-v2",
+		"name": "SiS - Admin Dashboard API Only",
+		"description": "Dedicated Postman API Collection for SiS Admin Dashboard endpoints only. Includes Automatic Token Management, Projects, Contact Messages with Reply, Sections, Collections CRUD, and Visitor Credentials.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "adminToken",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "🔑 1. Authentication & Profile",
+			"item": [
+				{
+					"name": "1.1 Admin Login (Auto-Saves Bearer Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.success && jsonData.data.access_token) {",
+									"    pm.collectionVariables.set('adminToken', jsonData.data.access_token);",
+									"    console.log('Admin Token Auto-Saved: ' + jsonData.data.access_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@sis-automation.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 Get Admin Profile (Me)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.3 Admin Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📁 2. Projects Management",
+			"item": [
+				{
+					"name": "2.1 Create Project",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sector_id\": 1,\n    \"title\": \"Smart Industrial Refinery Overhaul\",\n    \"client_name\": \"Suez Oil Processing\",\n    \"location\": \"Suez, Egypt\",\n    \"summary\": \"Complete DCS & SCADA migration with IIoT telemetry across 14 process units.\",\n    \"description\": \"Upgraded legacy control valves and transmitters to HART enabled smart devices linked to Siemens PCS7.\",\n    \"tags\": [\"SCADA\", \"DCS\", \"HART\", \"IIoT\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/projects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.2 Update Project",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Smart Industrial Refinery Overhaul (Updated)\",\n    \"summary\": \"Updated summary with extended 24/7 sustained support package.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/projects/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"projects",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.3 Delete Project",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/projects/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"projects",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📬 3. Contact Requests & Messages",
+			"item": [
+				{
+					"name": "3.1 View Contact Requests (Paginated)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/contact-requests?page=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"contact-requests"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.2 Update Inquiry Status (unread | read | archived)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"read\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/contact-requests/1/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"contact-requests",
+								"1",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.3 Reply to Inquiry via Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"Thank you for contacting SiS. Our engineering team has reviewed your inquiry and we are glad to schedule a technical call.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/contact-requests/1/reply",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"contact-requests",
+								"1",
+								"reply"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🔐 4. Visitor Access Credentials",
+			"item": [
+				{
+					"name": "4.1 Get All Visitor Credentials",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/visitor-credentials",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"visitor-credentials"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.2 Create Visitor Credential",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"demo_visitor_2026\",\n    \"password\": \"Pass123!visitor\",\n    \"days_valid\": 7\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/visitor-credentials",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"visitor-credentials"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.3 Update Visitor Credential",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_active\": false\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/visitor-credentials/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"visitor-credentials",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.4 Delete Visitor Credential",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/visitor-credentials/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"visitor-credentials",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🖼️ 5. Single Sections Update (Hero, Vision, IT-OT, etc.)",
+			"item": [
+				{
+					"name": "5.1 Update Hero Section",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tagline\": \"INTEGRATED INDUSTRIAL SOLUTIONS\",\n    \"headline\": \"Engineering Precision Automation\",\n    \"subheadline\": \"End-to-End Control, Instrumentation & Industrial IT Ecosystems.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/hero/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"hero",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.2 Update Vision / About Section",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Our Mission & Vision\",\n    \"description\": \"To lead industrial digital transformation across the Middle East with high reliability engineering.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/vision/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"vision",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.3 Update IT-OT Divide Section",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"headline\": \"Bridging IT and OT Environments\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/it-ot/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"it-ot",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📦 6. Collections CRUD (Services, Sectors, Partners, Clients, etc.)",
+			"item": [
+				{
+					"name": "6.1 Create Service",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Industrial Cyber Security & OT Defense\",\n    \"slug\": \"industrial-cyber-security\",\n    \"description\": \"Protection and telemetry isolation for critical DCS and SCADA infrastructure.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/services",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.2 Update Service",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Updated description with IEC 62443 compliance standards.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/services/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"services",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.3 Delete Service",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/services/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"services",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.4 Create Industrial Sector",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Pharmaceuticals & Life Sciences\",\n    \"slug\": \"pharma-life-sciences\",\n    \"description\": \"Batch control and 21 CFR Part 11 compliant SCADA solutions.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/sectors",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"sectors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.5 Create Technology Partner",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Siemens Industrial Automation\",\n    \"slug\": \"siemens\",\n    \"description\": \"Solution Partner for S7-1500 & PCS7 systems.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/partners",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"partners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.6 Create Client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"EGPC - Egyptian General Petroleum Corporation\",\n    \"slug\": \"egpc\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/clients",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

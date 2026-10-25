@@ -1,0 +1,42 @@
+export default [
+  {
+    icon: 'water',
+    title: 'Water & Waste Water',
+    kicker: 'Resilient infrastructure',
+    text: 'Control and monitoring systems for desalination, treatment and wastewater facilities—from intake to distribution.',
+    clients: ['Béjaïa RO Plant', 'SWCC', 'Qaliobia Waste Water', 'UNIHA Water Technology'],
+    scope: ['PLC and SCADA redundancy', 'Reverse-osmosis control', 'Remote infrastructure security'],
+  },
+  {
+    icon: 'factory',
+    title: 'Food, Beverage & FMCG',
+    kicker: 'Connected production',
+    text: 'Modernising production through process automation, recipe control, ERP connectivity and plant-wide visibility.',
+    clients: ['Henkel', 'BariQ', 'TAK Foods Factory'],
+    scope: ['Batch and recipe automation', 'Traceable production data', 'ERP and reporting integration'],
+  },
+  {
+    icon: 'science',
+    title: 'Chemical Industries',
+    kicker: 'Exact process control',
+    text: 'High-integrity automation for chemical dosing, valves, fire systems and critical process loops.',
+    clients: ['Emisal', 'Gas Cool'],
+    scope: ['Valve and actuator control', 'Safety and shutdown systems', 'Centralised monitoring'],
+  },
+  {
+    icon: 'oil',
+    title: 'Oil & Gas',
+    kicker: 'Field-to-control intelligence',
+    text: 'Industrial wireless, instrumentation, SCADA and secure remote monitoring for distributed energy assets.',
+    clients: ['Khalda Petroleum', 'Saudi Aramco'],
+    scope: ['Field instrumentation', 'Industrial wireless networks', 'Safety and commissioning'],
+  },
+  {
+    icon: 'engineering',
+    title: 'Heavy Industries',
+    kicker: 'Reliable production systems',
+    text: 'Electrical renewal, panels, automation upgrades and dependable commissioning for demanding plants.',
+    clients: ['Greater Cairo Foundries', 'Al Takamol Cement'],
+    scope: ['Control-panel engineering', 'SCADA modernisation', 'Plant commissioning'],
+  },
+]

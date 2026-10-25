@@ -1,0 +1,205 @@
+const baseUrl = import.meta.env.BASE_URL;
+
+export const useCasesProjects = [
+  {
+    id: "henkel-factory",
+    title: "Henkel Factory",
+    client: "Henkel",
+    industry: "Food, Beverage & FMCG",
+    location: "6th of October, Egypt",
+    shortDescription:
+      "Comprehensive SCADA software upgrade, process automation for chemical mixing, full mechanical/electrical integration, and AR-assisted operational guidance for improved productivity and safety.",
+    coverImage: `${baseUrl}images/henkel/Capture6.PNG`,
+    images: [
+      `${baseUrl}images/henkel/Capture6.PNG`,
+      `${baseUrl}images/henkel/Capture1.PNG`,
+      `${baseUrl}images/henkel/Capture2.PNG`,
+      `${baseUrl}images/henkel/Capture3.PNG`,
+      `${baseUrl}images/henkel/Capture4.PNG`,
+      // `${baseUrl}images/henkel/Capture5.PNG`,
+    ],
+    scope: [
+      "Comprehensive SCADA software upgrade",
+      "Process automation for chemical mixing",
+      "Digital overlays & AR smart glasses for assembly guidance",
+      "Heat tracing systems and heating ovens integration",
+      "Chemical dosing and thermal control automation",
+      "Turnkey electrical, automation, and mechanical delivery",
+    ],
+    results: [
+      "Reduced Human Error",
+      "Accelerated Maintenance Workflows",
+      "Shortened Training Time",
+      "Zero Production Halts",
+      "Boosted OEE and workplace safety",
+    ],
+  },
+  {
+    id: "bariq-factory",
+    title: "Bariq Factory",
+    client: "Bariq",
+    industry: "Food, Beverage & FMCG",
+    location: "Cairo, Egypt",
+    shortDescription:
+      "ERP-connected production intelligence with ODOO integration and smart SCADA reporting for real-time process visibility and operational traceability.",
+    coverImage: `${baseUrl}images/bariq/Capture1.PNG`,
+    images: [
+      `${baseUrl}images/bariq/Capture1.PNG`,
+      `${baseUrl}images/industry-food.webp`,
+      `${baseUrl}images/control-room.webp`,
+    ],
+    scope: [
+      "Factory ERP ODOO integration",
+      "Ground-level production line controller connectivity",
+      "SCADA database connectivity via SiS bridging solutions",
+      "Smart SCADA and reporting deployment",
+    ],
+    results: [],
+  },
+  {
+    id: "bejaia-ro-water-desalination-plant",
+    title: "Béjaïa RO Water Desalination Plant",
+    client: "Innovative Water Applications",
+    industry: "Water & Wastewater",
+    location: "Algeria",
+    shortDescription:
+      "Robust PLC commissioning and SCADA communication verification for a reverse osmosis plant with redundancy and cyber-hardening for reliable remote operation.",
+    coverImage: `${baseUrl}images/bejaja/Capture1.PNG`,
+    images: [
+      `${baseUrl}images/bejaja/Capture1.PNG`,
+      `${baseUrl}images/bejaja/Capture2.PNG`,
+      `${baseUrl}images/industry-water.webp`,
+      `${baseUrl}images/control-room.webp`,
+    ],
+    scope: [
+      "PLC commissioning via Modicon M580",
+      "Execution using Control Expert V16 and Vijeo Designer V6.3",
+      "Documentation and PLC-SCADA communication verification",
+      "SCADA IO server redundancy",
+      "Network cybersecurity hardening",
+    ],
+    results: [],
+  },
+  {
+    id: "qaliobia-water-wastewater-company",
+    title: "Qaliobia Water & Wastewater Company",
+    client: "Qaliobia Water & Wastewater Company",
+    industry: "Water & Wastewater",
+    location: "Qaliobia, Egypt",
+    shortDescription:
+      "Supplying and integrating an electrical control panel and complete SCADA system to support robust water network monitoring and control.",
+    coverImage: `${baseUrl}images/Qalioba/Capture1.PNG`,
+    images: [
+      `${baseUrl}images/Qalioba/Capture1.PNG`,
+      `${baseUrl}images/Qalioba/Capture2.PNG`,
+      `${baseUrl}images/Qalioba/Capture3.PNG`,
+    ],
+    scope: [
+      "Electrical control panel supply",
+      "Complete SCADA system delivery",
+      "Process visibility and control support",
+    ],
+    results: [],
+  },
+  {
+    id: "emisal",
+    title: "EMISAL",
+    client: "The Egyptian Minerals & Salts Co.",
+    industry: "Chemical Industries",
+    location: "Fayoum, Egypt",
+    shortDescription:
+      "Centralized SCADA solution for fire alarm monitoring and valve control, combining Siemens PLC automation with high-pressure process reliability and safety-first design.",
+    coverImage: `${baseUrl}images/emsil/Capture1.PNG`,
+    images: [
+      `${baseUrl}images/emsil/Capture1.PNG`,
+      `${baseUrl}images/emsil/Capture2.PNG`,
+      `${baseUrl}images/emsil/Capture3.PNG`,
+      `${baseUrl}images/emsil/Capture4.PNG`,
+    ],
+    scope: [
+      "Centralized SCADA fire alarm system",
+      "Wi-Fi network integration across multiple buildings",
+      "High-pressure valve control for steam and chemical systems",
+      "Ground-level reliability and digital analytics alignment",
+    ],
+    results: [
+      "Real-time monitoring and remote alarm visualization",
+      "Centralized control across zones",
+      "Reliable safety-focused process operation",
+    ],
+  },
+  {
+    id: "khalda-petroleum-company",
+    title: "Khalda Petroleum Company",
+    client: "Khalda Petroleum Company",
+    industry: "Oil & Gas",
+    location: "Marsa Matrouh, Egypt",
+    shortDescription:
+      "Field instrumentation and wireless network deployment for pressure and temperature transmitters, with commissioning and startup support for operational continuity.",
+    coverImage: `${baseUrl}images/khalida/Capture1.PNG`,
+    images: [
+      `${baseUrl}images/khalida/Capture1.PNG`,
+      `${baseUrl}images/khalida/Capture2.PNG`,
+      `${baseUrl}images/khalida/Capture3.PNG`,
+      `${baseUrl}images/khalida/Capture4.PNG`,
+    ],
+    scope: [
+      "Site survey and network planning",
+      "Transmitter installation",
+      "Wireless network configuration",
+      "Gateway installation",
+      "Commissioning and startup",
+    ],
+    results: [],
+  },
+  {
+    id: "TAK factory",
+    title: "TAK factory",
+    client: "TAK factory",
+    industry: "food & beverage",
+    location: "Menofia, Egypt",
+    shortDescription:
+      "7.	Enhancing Operational Efficiency - TAK Foods Factory.",
+    coverImage: `${baseUrl}images/TAK/Capture1.PNG`,
+    images: [
+      `${baseUrl}images/TAK/Capture1.PNG`,
+      `${baseUrl}images/TAK/Capture2.PNG`,
+      `${baseUrl}images/TAK/Capture3.PNG`,
+    ],
+    scope: [
+      "Backend Upgrades:  Standardised Platform: Replaced proprietary custom system with industry-standard Siemens PLC.",
+      "Frontend Modernisation:  Modern HMI Interface: New Siemens touchscreen for intuitive operation.",
+      "Real-time Process Visualisation: Enhanced Motor Control.",
+      "Upgraded to modern variable frequency drives with precise speed control.",
+      "Brand new control panel with modern components.",
+      "Clean wiring and proper labelling.",
+      "Improved safety and reliability.",
+    ],
+    results: [],
+  },
+  {
+  id: "Smart network for drinking water and irrigation",
+  title: "Smart Network for Drinking Water and Irrigation",
+  client: "New Administrative Capital",
+  industry: "Water & Wastewater",
+  location: "New Administrative Capital, Egypt",
+  shortDescription:
+    "Testing and commissioning of the smart network for drinking water and irrigation.",
+  coverImage: `${baseUrl}images/adminCapital/Capture1.PNG`,
+  images: [
+    `${baseUrl}images/adminCapital/Capture1.PNG`,
+    `${baseUrl}images/adminCapital/Capture2.PNG`,
+  ],
+  scope: [
+    "System Testing: Comprehensive testing of the smart drinking water and irrigation network.",
+    "Commissioning: Commissioning of the network to ensure proper system operation.",
+    "Functional Verification: Verification of system functionality and operational performance.",
+    "Control & Monitoring Checks: Testing the control and monitoring functions of the network.",
+    "Operational Readiness: Ensuring the system is ready for reliable operation.",
+    "Performance Validation: Validating system performance during the commissioning process.",
+  ],
+  results: [],
+},
+];
+
+export default useCasesProjects;

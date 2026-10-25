@@ -1,0 +1,1422 @@
+{
+	"info": {
+		"_postman_id": "sis-complete-api-v1-collection-id",
+		"name": "SiS - Superior Integrated Solutions API (Complete Collection)",
+		"description": "Complete Postman collection for SiS (Superior Integrated Solutions) API including Public Endpoints & Admin Dashboard API v1.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://127.0.0.1:8000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "adminToken",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "🔒 1. Admin Authentication",
+			"item": [
+				{
+					"name": "1.1 Admin Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.access_token) {",
+									"    pm.collectionVariables.set('adminToken', jsonData.data.access_token);",
+									"    console.log('Admin Token set successfully: ' + jsonData.data.access_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@sis-eg.org\",\n  \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 Get Current Admin Profile (Me)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.3 Admin Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🌐 2. Public Endpoints",
+			"item": [
+				{
+					"name": "2.1 Get Hero Section",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/hero",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"hero"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.2 Get Vision / About Section",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/vision",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"vision"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.3 Get About Hero Section",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/about-hero",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"about-hero"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.4 Get IT/OT Divide Section",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/it-ot",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"it-ot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.5 Get Core Values",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/core-values",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"core-values"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.6 Get Empowered Domains",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/domains",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"domains"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.7 Get Projects (Paginated)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/projects?per_page=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"projects"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "10"
+								},
+								{
+									"key": "sector",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.8 Get Single Project by Slug",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/projects/smart-city-automation",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"projects",
+								"smart-city-automation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.9 Get All Services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/services",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.10 Get Single Service by Slug",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/services/scada-upgrades",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"services",
+								"scada-upgrades"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.11 Get Sectors & Capability Matrix",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/sectors",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"sectors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.12 Get Partners",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/partners",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"partners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.13 Get Clients",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/clients",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.14 Get Timeline Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/timeline",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"timeline"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.15 Get Pillars",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/pillars",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pillars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.16 Get Workflow Stages",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/work-flow",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-flow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.17 Get Work Samples",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/work-samples",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"work-samples"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.18 Submit Contact Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Ahmad Ashraf\",\n  \"email\": \"ahmad@example.com\",\n  \"phone\": \"+201000000000\",\n  \"company_name\": \"Tech Solutions\",\n  \"message\": \"I would like to inquire about SCADA integration services.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/contact",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"contact"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.19 Verify Visitor Access Credentials (Protected Work Samples)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"demo\",\n  \"password\": \"demo\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/visitor-access/verify",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"visitor-access",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🛠️ 3. Admin Dashboard — Sections",
+			"item": [
+				{
+					"name": "3.1 Update Hero Section",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tagline\": \"INNOVATION & EXCELLENCE\",\n  \"headline\": \"Superior Integrated Solutions\",\n  \"subheadline\": \"Empowering Industries with Cutting-Edge OT/IT Integration\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/hero/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"hero",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.2 Update Vision Section",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"headline\": \"Pioneering Industrial Transformation\",\n  \"content\": \"Updated vision content for Superior Integrated Solutions.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/vision/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"vision",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📁 4. Admin Dashboard — Collections (CRUD)",
+			"item": [
+				{
+					"name": "4.1 Services — Create Service",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Advanced Industrial Cybersecurity\",\n  \"summary\": \"End-to-end OT network security and threat monitoring.\",\n  \"description\": \"Comprehensive security assessments and firewall deployment for industrial plants.\",\n  \"icon\": \"shield-check\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/services",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.2 Services — Update Service",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Advanced Industrial Cybersecurity & Compliance\",\n  \"summary\": \"Updated OT network security summary.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/services/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"services",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.3 Services — Delete Service",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/services/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"services",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.4 Partners — Create Partner (with logo_path file/string)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Schneider Electric",
+									"type": "text"
+								},
+								{
+									"key": "website_url",
+									"value": "https://www.se.com",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "technology",
+									"type": "text"
+								},
+								{
+									"key": "logo_path",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/partners",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"partners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.5 Clients — Create Client (with logo_path file/string)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Saudi Aramco",
+									"type": "text"
+								},
+								{
+									"key": "sort_order",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "logo_path",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/clients",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.6 Work Samples — Create Work Sample (with image file)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "SCADA Automation Demo",
+									"type": "text"
+								},
+								{
+									"key": "industry",
+									"value": "Manufacturing",
+									"type": "text"
+								},
+								{
+									"key": "blurb",
+									"value": "Live SCADA monitoring sample.",
+									"type": "text"
+								},
+								{
+									"key": "free",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/work-samples",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"work-samples"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "💼 5. Admin Dashboard — Projects CRUD",
+			"item": [
+				{
+					"name": "5.1 Admin Create Project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Smart Water Substation Automation",
+									"type": "text"
+								},
+								{
+									"key": "client_name",
+									"value": "Saline Water Conversion Corp",
+									"type": "text"
+								},
+								{
+									"key": "sector_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "summary",
+									"value": "Full SCADA and IoT upgrade for water distribution.",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Detailed project description for substation commissioning.",
+									"type": "text"
+								},
+								{
+									"key": "cover_image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/projects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.2 Admin Update Project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Updated Smart Water Substation Automation",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/projects/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"projects",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.3 Admin Delete Project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/projects/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"projects",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "✉️ 6. Admin Dashboard — Contact Requests & Replies",
+			"item": [
+				{
+					"name": "6.1 Get Paginated Contact Requests",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/contact-requests?page=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"contact-requests"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.2 Update Contact Request Status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"read\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/contact-requests/1/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"contact-requests",
+								"1",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.3 Reply to Contact Request (Sends Email & Persists Reply)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"message\": \"Thank you for reaching out to SiS. Our technical team will review your SCADA request and send a proposal shorty.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/contact-requests/1/reply",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"contact-requests",
+								"1",
+								"reply"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🔑 7. Admin Dashboard — Visitor Credentials",
+			"item": [
+				{
+					"name": "7.1 Get All Visitor Credentials",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/visitor-credentials",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"visitor-credentials"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7.2 Create Visitor Credential",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"client_vip\",\n  \"password\": \"secret123\",\n  \"days_valid\": 30\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/visitor-credentials",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"visitor-credentials"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7.3 Update Visitor Credential",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"is_active\": true,\n  \"days_valid\": 60\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/visitor-credentials/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"visitor-credentials",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7.4 Delete Visitor Credential",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/visitor-credentials/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"visitor-credentials",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

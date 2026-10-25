@@ -1,0 +1,24 @@
+# ==============================================================================
+# SiS (Superior Integrated Solutions) Robots Policy
+# Environment: Production
+# ==============================================================================
+
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /storage/temp/
+
+# Dedicated Search Engine Crawlers
+User-agent: Googlebot
+Allow: /
+Disallow: /dashboard/
+Disallow: /api/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /dashboard/
+Disallow: /api/
+
+# Sitemap Discovery
+Sitemap: https://sis.iptvpro.org/sitemap.xml
