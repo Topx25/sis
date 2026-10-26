@@ -4,6 +4,7 @@ import { adminAPI } from "@/SIS-Dashboard/api";
 import ConfirmDialog from "@/SIS-Dashboard/components/ConfirmDialog.vue";
 import AdminPageHeader from "@/SIS-Dashboard/components/AdminPageHeader.vue";
 import ToastNotification from "@/components/global/ToastNotification.vue";
+import resolveImageUrl from "@/utils/imageUrl";
 
 const items = ref([]);
 
@@ -42,31 +43,9 @@ const showDeleteDialog = ref(false);
 const itemToDelete = ref(null);
 
 
-const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(
-  /\/+$/,
-  "",
-);
-
+// Single source of truth for image URL resolution (see @/utils/imageUrl).
 function getImageUrl(src) {
-  if (!src) return "";
-
-  if (src.startsWith("blob:")) {
-    return src;
-  }
-
-  if (src.startsWith("http://") || src.startsWith("https://")) {
-    return src;
-  }
-
-  const normalizedSrc = src
-    .replace(/^\/+/, "")
-    .replace(/^storage\/+/, "");
-
-  const origin = /^https?:\/\//i.test(API_BASE)
-    ? new URL(API_BASE).origin
-    : window.location.origin;
-
-  return `${origin}/storage/${normalizedSrc}`;
+  return resolveImageUrl(src);
 }
 
 function emptyItem() {

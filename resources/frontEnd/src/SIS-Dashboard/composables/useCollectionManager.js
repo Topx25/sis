@@ -5,6 +5,7 @@ import {
 } from "vue";
 
 import { adminAPI } from "@/SIS-Dashboard/api/index.js";
+import sharedResolveImageUrl from "@/utils/imageUrl";
 
 const DEFAULT_CAPABILITIES = {
   create: false,
@@ -99,40 +100,9 @@ function slugify(value) {
     .replace(/^-+|-+$/g, "");
 }
 
+// Delegates to the single shared resolver (see @/utils/imageUrl).
 function resolveImageUrl(value) {
-  if (!value) return "";
-
-  const raw = String(value).trim();
-
-  if (!raw) return "";
-
-  try {
-    const apiUrl = new URL(
-      /^https?:\/\//i.test(API_BASE_URL)
-        ? API_BASE_URL
-        : window.location.origin,
-    );
-
-    const imageUrl = new URL(
-      raw,
-      apiUrl.origin,
-    );
-
-    const isLocalHost = [
-      "localhost",
-      "127.0.0.1",
-      "::1",
-    ].includes(imageUrl.hostname);
-
-    if (isLocalHost) {
-      imageUrl.protocol = apiUrl.protocol;
-      imageUrl.host = apiUrl.host;
-    }
-
-    return imageUrl.href;
-  } catch {
-    return raw;
-  }
+  return sharedResolveImageUrl(value);
 }
 
 export function useCollectionManager(

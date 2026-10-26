@@ -515,6 +515,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { api } from "../../api/index.js";
 import { normalizeHero } from "../../api/normalizers.js";
+import resolveImageUrl from "@/utils/imageUrl";
 import Skeleton from "@/components/common/Skeleton.vue";
 
 const router = useRouter();
@@ -522,35 +523,9 @@ const carouselSlides = ref([]);
 const isLoading = ref(true);
 
 
-const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(
-  /\/+$/,
-  "",
-);
-
+// Single source of truth for image URL resolution (see @/utils/imageUrl).
 function getHeroImageUrl(src) {
-  if (!src) return "";
-
-  if (
-    src.startsWith("http://") ||
-    src.startsWith("https://") ||
-    src.startsWith("blob:")
-  ) {
-    return src;
-  }
-
-  const normalizedSrc = src
-    .replace(/^\/+/, "")
-    .replace(/^storage\/+/, "");
-
-  // Uploaded/backend images
-  if (normalizedSrc.startsWith("collections/")) {
-    const apiUrl = new URL(API_BASE || "/", window.location.origin);
-
-    return `${apiUrl.origin}/storage/${normalizedSrc}`;
-  }
-
-  // Existing frontend static images
-  return `${import.meta.env.BASE_URL}${normalizedSrc}`;
+  return resolveImageUrl(src);
 }
 
 

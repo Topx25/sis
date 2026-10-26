@@ -17,6 +17,25 @@ function getApiOrigin() {
   return "";
 }
 
+// Derive the API root (".../api") from the configured API base, so storage URLs
+// resolve to "<root>/storage/..." — i.e. "/api/storage/...", where the Laravel
+// public disk is actually served (the app lives under the "/api" subfolder).
+function getApiRoot() {
+  // API_BASE is like "/api/v1" (relative) or "https://host/api/v1" (absolute).
+  const withoutVersion = API_BASE.replace(/\/v1$/, "");
+  if (
+    withoutVersion.startsWith("http://") ||
+    withoutVersion.startsWith("https://")
+  ) {
+    return withoutVersion;
+  }
+  const origin =
+    typeof window !== "undefined" && window.location?.origin
+      ? window.location.origin
+      : "";
+  return origin + withoutVersion;
+}
+
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
 
 function isLocalOrPrivateHost(hostname) {
@@ -87,7 +106,7 @@ export function resolveImageUrl(src) {
 
   // If path already starts with storage/
   if (clean.startsWith("storage/")) {
-    return `${apiOrigin}/${clean}`;
+    return `${getApiRoot()}/${clean}`;
   }
 
   // Known backend storage directories
@@ -104,7 +123,7 @@ export function resolveImageUrl(src) {
 
   for (const folder of STORAGE_FOLDERS) {
     if (clean.startsWith(folder + "/")) {
-      return `${apiOrigin}/storage/${clean}`;
+      return `${getApiRoot()}/storage/${clean}`;
     }
   }
 
@@ -115,7 +134,7 @@ export function resolveImageUrl(src) {
 
   // Fallback: if it contains a slash, route to backend storage
   if (clean.includes("/")) {
-    return `${apiOrigin}/storage/${clean}`;
+    return `${getApiRoot()}/storage/${clean}`;
   }
 
   return `${import.meta.env.BASE_URL}${clean}`;
