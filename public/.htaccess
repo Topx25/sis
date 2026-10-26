@@ -23,6 +23,19 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
+    # Serve cached public API reads as static JSON (skips PHP/framework boot)
+    # 1) requests with a simple query string (e.g. ?per_page=100)
+    RewriteCond %{REQUEST_METHOD} =GET
+    RewriteCond %{QUERY_STRING} ^[A-Za-z0-9=_&-]+$
+    RewriteCond %{DOCUMENT_ROOT}/api/apicache/$1__%{QUERY_STRING}.json -f
+    RewriteRule ^(v1/(?!admin)[A-Za-z0-9/_-]+)$ apicache/$1__%{QUERY_STRING}.json [L]
+
+    # 2) requests with no query string
+    RewriteCond %{REQUEST_METHOD} =GET
+    RewriteCond %{QUERY_STRING} =""
+    RewriteCond %{DOCUMENT_ROOT}/api/apicache/$1.json -f
+    RewriteRule ^(v1/(?!admin)[A-Za-z0-9/_-]+)$ apicache/$1.json [L]
+
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f

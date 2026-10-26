@@ -23,6 +23,11 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\ExtractAdminToken::class,
             \App\Http\Middleware\SetLocale::class,
         ]);
+
+        // Cache public read responses as static JSON for the web server to serve directly
+        $middleware->api(append: [
+            \App\Http\Middleware\CachePublicApi::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
