@@ -15,7 +15,9 @@ class AboutController extends Controller
 
     public function index(): JsonResponse
     {
-        $aboutData = Cache::remember('sis_section_vision_data', 3600, function () {
+        $locale = app()->getLocale();
+
+        $aboutData = Cache::remember("sis_section_vision_data_{$locale}", 3600, function () {
             $about = AboutSection::where('is_active', true)->first();
             return $about ? (new AboutSectionResource($about))->resolve() : null;
         });

@@ -20,12 +20,12 @@ class HeaderController extends Controller
      */
     public function index(): JsonResponse
     {
-        $setting = Cache::rememberForever('api_header_settings', function () {
-            return HeaderSetting::instance();
+        $data = Cache::rememberForever('api_header_settings', function () {
+            return (new HeaderResource(HeaderSetting::instance()))->resolve();
         });
 
         return $this->successResponse(
-            new HeaderResource($setting),
+            $data,
             'Header configuration retrieved successfully.'
         );
     }

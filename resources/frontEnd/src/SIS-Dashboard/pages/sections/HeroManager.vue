@@ -62,9 +62,11 @@ function getImageUrl(src) {
     .replace(/^\/+/, "")
     .replace(/^storage\/+/, "");
 
-  const apiUrl = new URL(API_BASE);
+  const origin = /^https?:\/\//i.test(API_BASE)
+    ? new URL(API_BASE).origin
+    : window.location.origin;
 
-  return `${apiUrl.origin}/storage/${normalizedSrc}`;
+  return `${origin}/storage/${normalizedSrc}`;
 }
 
 function emptyItem() {

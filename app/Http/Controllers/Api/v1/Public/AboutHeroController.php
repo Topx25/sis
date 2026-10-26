@@ -15,7 +15,9 @@ class AboutHeroController extends Controller
 
     public function index(): JsonResponse
     {
-        $aboutHeroData = Cache::remember('sis_section_about_hero_data', 3600, function () {
+        $locale = app()->getLocale();
+
+        $aboutHeroData = Cache::remember("sis_section_about_hero_data_{$locale}", 3600, function () {
             $aboutHero = AboutHero::where('is_active', true)->first();
             return $aboutHero ? (new AboutHeroResource($aboutHero))->resolve() : null;
         });

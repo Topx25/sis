@@ -137,15 +137,24 @@ class AdminSectionController extends Controller
             $item->fill($data);
             $item->save();
         }
-        \Illuminate\Support\Facades\Cache::forget("sis_section_{$section}");
-        \Illuminate\Support\Facades\Cache::forget("sis_section_{$section}_data");
-        \Illuminate\Support\Facades\Cache::forget("sis_section_" . str_replace('-', '_', $section) . "_data");
+        $sectionKeys = [
+            "sis_section_{$section}",
+            "sis_section_{$section}_data",
+            "sis_section_" . str_replace('-', '_', $section) . "_data",
+        ];
         if ($section === 'vision' || $section === 'about') {
-            \Illuminate\Support\Facades\Cache::forget("sis_section_vision_data");
-            \Illuminate\Support\Facades\Cache::forget("sis_section_about_data");
+            $sectionKeys[] = "sis_section_vision_data";
+            $sectionKeys[] = "sis_section_about_data";
         }
         if ($section === 'about-hero') {
-            \Illuminate\Support\Facades\Cache::forget("sis_section_about_hero_data");
+            $sectionKeys[] = "sis_section_about_hero_data";
+        }
+        // Clear each base key plus its per-locale variants (read paths cache by locale).
+        foreach (array_unique($sectionKeys) as $key) {
+            \Illuminate\Support\Facades\Cache::forget($key);
+            foreach (['en', 'ar'] as $loc) {
+                \Illuminate\Support\Facades\Cache::forget("{$key}_{$loc}");
+            }
         }
 
         return $this->successResponse($item->fresh(), ucfirst($section) . ' section updated successfully.');

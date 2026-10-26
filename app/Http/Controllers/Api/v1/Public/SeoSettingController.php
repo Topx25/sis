@@ -21,12 +21,12 @@ class SeoSettingController extends Controller
     {
         $locale = $request->query('lang') ?: app()->getLocale() ?: 'en';
 
-        $setting = Cache::remember("api_seo_settings_{$locale}", 3600, function () {
-            return SeoSetting::instance();
+        $data = Cache::remember("api_seo_settings_{$locale}", 3600, function () use ($request) {
+            return (new SeoSettingResource(SeoSetting::instance()))->resolve($request);
         });
 
         return $this->successResponse(
-            new SeoSettingResource($setting),
+            $data,
             'Public SEO settings retrieved successfully.'
         );
     }

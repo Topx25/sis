@@ -15,7 +15,9 @@ class HeroController extends Controller
 
     public function index(): JsonResponse
     {
-        $heroData = Cache::remember('sis_section_hero_data', 3600, function () {
+        $locale = app()->getLocale();
+
+        $heroData = Cache::remember("sis_section_hero_data_{$locale}", 3600, function () {
             $hero = HeroSection::where('is_active', true)->first();
             return $hero ? (new HeroSectionResource($hero))->resolve() : null;
         });

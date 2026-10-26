@@ -108,7 +108,9 @@ function resolveImageUrl(value) {
 
   try {
     const apiUrl = new URL(
-      API_BASE_URL || window.location.origin,
+      /^https?:\/\//i.test(API_BASE_URL)
+        ? API_BASE_URL
+        : window.location.origin,
     );
 
     const imageUrl = new URL(
