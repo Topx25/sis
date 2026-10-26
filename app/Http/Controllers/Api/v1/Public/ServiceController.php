@@ -14,7 +14,7 @@ class ServiceController extends Controller
 
     public function index(): JsonResponse
     {
-        $services = Service::all();
+        $services = Service::with('seoMetadata')->get();
         $defaultSection = [
             'id' => 1,
             'subtitle' => 'Services & Capabilities',

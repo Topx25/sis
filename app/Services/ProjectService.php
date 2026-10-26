@@ -13,7 +13,14 @@ class ProjectService
 
     public function getPaginatedProjects(?string $sectorSlug = null, ?string $search = null, int $perPage = 10): LengthAwarePaginator
     {
-        $query = Project::with(['sector', 'services', 'images'])->latest();
+        $query = Project::with([
+            'sector' => fn ($q) => $q->withCount('projects'),
+            'sector.seoMetadata',
+            'services',
+            'services.seoMetadata',
+            'images',
+            'seoMetadata',
+        ])->latest();
 
         if ($sectorSlug) {
             $query->whereHas('sector', fn ($q) => $q->where('slug', $sectorSlug));
@@ -32,7 +39,14 @@ class ProjectService
 
     public function getProjectBySlug(string $slug): Project
     {
-        return Project::with(['sector', 'services', 'images'])->where('slug', $slug)->firstOrFail();
+        return Project::with([
+            'sector' => fn ($q) => $q->withCount('projects'),
+            'sector.seoMetadata',
+            'services',
+            'services.seoMetadata',
+            'images',
+            'seoMetadata',
+        ])->where('slug', $slug)->firstOrFail();
     }
 
     public function createProject(array $data): Project

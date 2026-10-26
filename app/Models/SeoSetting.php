@@ -40,13 +40,20 @@ class SeoSetting extends Model
         'social_links' => 'array',
     ];
 
+    /** In-request memoization of the singleton to avoid repeated firstOrCreate queries. */
+    protected static ?self $cachedInstance = null;
+
     /**
      * Singleton instance accessor with safe bilingual fallbacks and production canonical domain.
      */
     public static function instance(): self
     {
+        if (static::$cachedInstance !== null) {
+            return static::$cachedInstance;
+        }
+
         try {
-            return static::firstOrCreate(
+            return static::$cachedInstance = static::firstOrCreate(
                 ['id' => 1],
                 [
                     'canonical_base_url' => config('app.url'),
@@ -106,7 +113,7 @@ class SeoSetting extends Model
                 'en' => 'Superior Integrated Solutions (SiS) bridges OT and IT across the MENA region with industrial automation, IIoT, and digital transformation.',
                 'ar' => 'حلول سوبيريور المتكاملة (SiS) تربط بين التكنولوجيا التشغيلية وتكنولوجيا المعلومات في منطقة الشرق الأوسط وشمال أفريقيا من خلال الأتمتة الصناعية والتحول الرقمي.',
             ]);
-            return $fallback;
+            return static::$cachedInstance = $fallback;
         }
     }
 
@@ -123,10 +130,12 @@ class SeoSetting extends Model
         });
 
         static::saved(function () {
+            static::$cachedInstance = null;
             \App\Support\CacheManager::invalidateSeoSettings();
         });
 
         static::deleted(function () {
+            static::$cachedInstance = null;
             \App\Support\CacheManager::invalidateSeoSettings();
         });
     }

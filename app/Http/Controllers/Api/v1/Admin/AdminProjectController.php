@@ -20,13 +20,27 @@ class AdminProjectController extends Controller
     public function index(): JsonResponse
     {
         // For admin, return all projects with relations loaded
-        $projects = Project::with(['sector', 'services', 'images'])->latest()->get();
+        $projects = Project::with([
+            'sector' => fn ($q) => $q->withCount('projects'),
+            'sector.seoMetadata',
+            'services',
+            'services.seoMetadata',
+            'images',
+            'seoMetadata',
+        ])->latest()->get();
         return $this->successResponse(ProjectResource::collection($projects), 'Projects retrieved successfully.');
     }
 
     public function show(Project $project): JsonResponse
     {
-        $project->load(['sector', 'services', 'images']);
+        $project->load([
+            'sector' => fn ($q) => $q->withCount('projects'),
+            'sector.seoMetadata',
+            'services',
+            'services.seoMetadata',
+            'images',
+            'seoMetadata',
+        ]);
         return $this->successResponse(new ProjectResource($project), 'Project retrieved successfully.');
     }
 

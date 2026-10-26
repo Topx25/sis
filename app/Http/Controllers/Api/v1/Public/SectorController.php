@@ -14,7 +14,7 @@ class SectorController extends Controller
 
     public function index(): JsonResponse
     {
-        $sectors = Sector::withCount('projects')->get();
+        $sectors = Sector::withCount('projects')->with('seoMetadata')->get();
 
         $capabilities = [
             'title' => 'The SiS Capability Matrix',
