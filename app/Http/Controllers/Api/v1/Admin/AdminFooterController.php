@@ -222,6 +222,13 @@ class AdminFooterController extends Controller
             }
         });
 
+        // Mass (query-builder) updates bypass Eloquent events, so the static API
+        // cache invalidation in AppServiceProvider never fires. Clear it manually.
+        $docroot = $_SERVER['DOCUMENT_ROOT'] ?? '';
+        if ($docroot !== '') {
+            \Illuminate\Support\Facades\File::deleteDirectory(rtrim($docroot, '/') . '/api/apicache');
+        }
+
         $updatedLinks = FooterLink::ordered()->get();
 
         return $this->successResponse(

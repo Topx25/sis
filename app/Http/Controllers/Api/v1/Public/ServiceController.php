@@ -24,10 +24,8 @@ class ServiceController extends Controller
         ];
 
         try {
-            $section = \App\Models\ServicesSection::first();
-            if (!$section) {
-                $section = \App\Models\ServicesSection::create($defaultSection);
-            }
+            // Read-only: never create a row during a GET (breaks on read-only/replica DBs).
+            $section = \App\Models\ServicesSection::first() ?: (object) $defaultSection;
         } catch (\Throwable $e) {
             $section = (object) $defaultSection;
         }

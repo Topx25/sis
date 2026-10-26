@@ -13,7 +13,7 @@ class ContactService
     {
         $contactRequest = ContactRequest::create($data);
 
-        $recipient = env('MAIL_TO_ADDRESS', config('mail.from.address', 'sales@sis-eg.org'));
+        $recipient = config('mail.to_address') ?: config('mail.from.address', 'sales@sis-eg.org');
         Mail::to($recipient)->send(new ContactRequestMail($contactRequest));
 
         return $contactRequest;

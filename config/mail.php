@@ -17,6 +17,12 @@ return [
     'default' => env('MAIL_MAILER', 'log'),
 
     /*
+    | Recipient address for contact-form notifications. Defined here (not read via
+    | env() at runtime) so the app stays compatible with `php artisan config:cache`.
+    */
+    'to_address' => env('MAIL_TO_ADDRESS'),
+
+    /*
     |--------------------------------------------------------------------------
     | Mailer Configurations
     |--------------------------------------------------------------------------
