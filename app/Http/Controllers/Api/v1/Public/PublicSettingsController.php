@@ -22,10 +22,19 @@ class PublicSettingsController extends Controller
             && ! empty($siteKey)
             && ! empty(AppSetting::getValue('turnstile', 'secret_key'));
 
+        $integrations = AppSetting::group('integrations');
+        $integrationsOn = ($integrations['enabled'] ?? '0') === '1';
+
         return $this->successResponse([
             'turnstile' => [
                 'enabled'  => $turnstileOn,
                 'site_key' => $turnstileOn ? $siteKey : '',
+            ],
+            'integrations' => [
+                'enabled'   => $integrationsOn,
+                'head_code' => $integrationsOn ? ($integrations['head_code'] ?? '') : '',
+                'body_code' => $integrationsOn ? ($integrations['body_code'] ?? '') : '',
+                'chat_code' => $integrationsOn ? ($integrations['chat_code'] ?? '') : '',
             ],
         ], 'Site configuration retrieved successfully.');
     }

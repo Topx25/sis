@@ -132,6 +132,8 @@ Route::prefix('v1')->group(function () {
                 Route::get('/settings/mail', [AdminSettingsController::class, 'mail']);
                 Route::put('/settings/mail', [AdminSettingsController::class, 'updateMail']);
                 Route::post('/settings/mail/test', [AdminSettingsController::class, 'testMail']);
+                Route::get('/settings/integrations', [AdminSettingsController::class, 'integrations']);
+                Route::put('/settings/integrations', [AdminSettingsController::class, 'updateIntegrations']);
             });
 
             // Admin CRUD Projects

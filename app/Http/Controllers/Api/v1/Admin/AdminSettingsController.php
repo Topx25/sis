@@ -125,4 +125,40 @@ class AdminSettingsController extends Controller
             'to_address'   => $m['to_address'] ?? '',
         ];
     }
+
+    // ---- Integrations (chat widget + head/tracking code) ----
+
+    public function integrations(): JsonResponse
+    {
+        return $this->successResponse($this->integrationsPayload(), 'Integrations retrieved successfully.');
+    }
+
+    public function updateIntegrations(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'enabled'   => ['required', 'boolean'],
+            'head_code' => ['nullable', 'string', 'max:20000'],
+            'body_code' => ['nullable', 'string', 'max:20000'],
+            'chat_code' => ['nullable', 'string', 'max:20000'],
+        ]);
+
+        AppSetting::setValue('integrations', 'enabled', $data['enabled'] ? '1' : '0');
+        AppSetting::setValue('integrations', 'head_code', $data['head_code'] ?? '');
+        AppSetting::setValue('integrations', 'body_code', $data['body_code'] ?? '');
+        AppSetting::setValue('integrations', 'chat_code', $data['chat_code'] ?? '');
+
+        return $this->successResponse($this->integrationsPayload(), 'Integrations saved successfully.');
+    }
+
+    private function integrationsPayload(): array
+    {
+        $i = AppSetting::group('integrations');
+
+        return [
+            'enabled'   => ($i['enabled'] ?? '0') === '1',
+            'head_code' => $i['head_code'] ?? '',
+            'body_code' => $i['body_code'] ?? '',
+            'chat_code' => $i['chat_code'] ?? '',
+        ];
+    }
 }

@@ -880,4 +880,8 @@ deleteUseCase: (id) =>
     request("/admin/settings/mail", { method: "PUT", body: data }),
   sendTestMail: (to) =>
     request("/admin/settings/mail/test", { method: "POST", body: { to } }),
+
+  getIntegrations: () => request("/admin/settings/integrations"),
+  updateIntegrations: (data) =>
+    request("/admin/settings/integrations", { method: "PUT", body: data }),
 };

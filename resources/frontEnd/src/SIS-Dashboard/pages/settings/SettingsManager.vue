@@ -23,6 +23,7 @@ const allTabs = [
   { id: "account", label: "My Account", icon: "person", adminOnly: false },
   { id: "users", label: "Users", icon: "group", adminOnly: true },
   { id: "email", label: "Email", icon: "mail", adminOnly: true },
+  { id: "integrations", label: "Integrations", icon: "code", adminOnly: true },
   { id: "seo", label: "SEO", icon: "travel_explore", adminOnly: true },
 ];
 const tabs = computed(() =>
@@ -262,12 +263,53 @@ async function sendTest() {
   }
 }
 
+/* ================= Integrations (chat + tracking code) ================= */
+const integrations = ref({ enabled: false, head_code: "", body_code: "", chat_code: "" });
+const savingIntegrations = ref(false);
+
+async function loadIntegrations() {
+  try {
+    const data = await adminApi.getIntegrations();
+    integrations.value = {
+      enabled: !!data?.enabled,
+      head_code: data?.head_code || "",
+      body_code: data?.body_code || "",
+      chat_code: data?.chat_code || "",
+    };
+  } catch (err) {
+    notify("Error", err.message || "Could not load integrations.", "error");
+  }
+}
+
+async function saveIntegrations() {
+  savingIntegrations.value = true;
+  try {
+    const data = await adminApi.updateIntegrations({
+      enabled: integrations.value.enabled,
+      head_code: integrations.value.head_code,
+      body_code: integrations.value.body_code,
+      chat_code: integrations.value.chat_code,
+    });
+    integrations.value = {
+      enabled: !!data?.enabled,
+      head_code: data?.head_code || "",
+      body_code: data?.body_code || "",
+      chat_code: data?.chat_code || "",
+    };
+    notify("Saved", "Integrations saved. They appear on the public site.", "success");
+  } catch (err) {
+    notify("Save failed", err.message || "Could not save integrations.", "error");
+  } finally {
+    savingIntegrations.value = false;
+  }
+}
+
 /* ---------------- init ---------------- */
 onMounted(async () => {
   await loadProfile();
   if (isAdmin.value) {
     activeTab.value = "protection";
-    await Promise.all([loadTurnstile(), loadUsers(), loadMail()]);
+    await Promise.all([loadTurnstile(), loadUsers(), loadMail(), loadIntegrations()]);
   }
 });
 </script>
@@ -569,6 +611,64 @@ onMounted(async () => {
           </button>
         </div>
         <p class="mt-2 text-xs text-slate-400">Save the settings first, then send the test.</p>
+      </div>
+    </section>
+
+    <!-- ================= Integrations ================= -->
+    <section
+      v-if="activeTab === 'integrations' && isAdmin"
+      class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900"
+    >
+      <h3 class="mb-1 text-lg font-bold text-slate-800 dark:text-slate-100">Integrations &amp; custom code</h3>
+      <p class="mb-5 text-sm text-slate-500 dark:text-slate-400">
+        Paste a chat widget and search-engine / tracking codes. They are injected into every page of the public site.
+      </p>
+
+      <label class="mb-5 flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 dark:bg-slate-800">
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Enable integrations</span>
+        <input v-model="integrations.enabled" type="checkbox" class="h-5 w-5 accent-[color:var(--sis-accent,#2563eb)]" />
+      </label>
+
+      <div class="space-y-4">
+        <div>
+          <label class="mb-1 block text-sm font-medium text-slate-600 dark:text-slate-300">
+            Chat widget code
+            <span class="text-xs text-slate-400">(injected before &lt;/body&gt;)</span>
+          </label>
+          <textarea
+            v-model="integrations.chat_code"
+            rows="6"
+            dir="ltr"
+            placeholder="<!-- Paste your chat widget embed code here (Tawk.to, Crisp, WhatsApp, ...) -->"
+            class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-mono text-xs dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+          ></textarea>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-slate-600 dark:text-slate-300">
+            Head code — analytics &amp; search engines
+            <span class="text-xs text-slate-400">(injected into &lt;head&gt;)</span>
+          </label>
+          <textarea
+            v-model="integrations.head_code"
+            rows="6"
+            dir="ltr"
+            placeholder="<!-- Google Analytics / Tag Manager / search-engine verification meta tags -->"
+            class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-mono text-xs dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800 dark:border-amber-800/40 dark:bg-amber-900/20 dark:text-amber-300">
+        <span class="material-symbols-outlined align-middle text-[16px]">info</span>
+        Google site/Bing verification also lives in <b>Global SEO</b>. External scripts load only from allowed domains (CSP) — if a widget doesn't appear, tell the developer the provider so its domain can be allowed.
+      </div>
+
+      <div class="mt-6">
+        <button type="button" :disabled="savingIntegrations" class="inline-flex items-center gap-2 rounded-xl bg-sis-accent px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60" @click="saveIntegrations">
+          <span class="material-symbols-outlined text-[18px]">save</span>
+          {{ savingIntegrations ? "Saving..." : "Save" }}
+        </button>
       </div>
     </section>
 

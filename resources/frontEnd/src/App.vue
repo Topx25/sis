@@ -33,6 +33,7 @@ import { useRoute } from 'vue-router'
 import { useIntersectionObserver } from '@vueuse/core'
 import { useSiteStore } from '@/stores/useSiteStore'
 import GlobalLoader from '@/components/global/GlobalLoader.vue'
+import { injectIntegrations } from '@/utils/injectIntegrations'
 
 const siteStore = useSiteStore()
 const route = useRoute()
@@ -57,6 +58,11 @@ const floatingTarget = computed(() => {
 onMounted(() => {
   if (!siteStore.loaded) {
     siteStore.loadAll()
+  }
+
+  // Inject admin-configured chat / tracking code on the public site only.
+  if (!isDashboard.value) {
+    injectIntegrations()
   }
 
   const observerOptions = {
