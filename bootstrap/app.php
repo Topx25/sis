@@ -29,9 +29,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\CachePublicApi::class,
         ]);
 
-        // Route-level role gate: ->middleware('role:admin')
+        // Route-level middleware aliases
         $middleware->alias([
             'role' => \App\Http\Middleware\EnsureRole::class,
+            'turnstile' => \App\Http\Middleware\VerifyTurnstile::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -4,17 +4,21 @@ namespace App\Services;
 
 use App\Mail\ContactRequestMail;
 use App\Models\ContactRequest;
+use App\Services\MailConfigService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Mail;
 
 class ContactService
 {
+    public function __construct(private MailConfigService $mailConfig) {}
+
     public function createContactRequest(array $data): ContactRequest
     {
         $contactRequest = ContactRequest::create($data);
 
-        $recipient = config('mail.to_address') ?: config('mail.from.address', 'sales@sis-eg.org');
-        Mail::to($recipient)->send(new ContactRequestMail($contactRequest));
+        // Apply any DB-configured SMTP settings before sending.
+        $this->mailConfig->apply();
+        Mail::to($this->mailConfig->recipient())->send(new ContactRequestMail($contactRequest));
 
         return $contactRequest;
     }

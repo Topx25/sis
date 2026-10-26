@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\v1\Admin\AdminHeaderController;
 use App\Http\Controllers\Api\v1\Admin\AdminIndustriesPageController;
 use App\Http\Controllers\Api\v1\Admin\AdminProjectController;
 use App\Http\Controllers\Api\v1\Admin\AdminSectionController;
+use App\Http\Controllers\Api\v1\Admin\AdminSettingsController;
 use App\Http\Controllers\Api\v1\Admin\AdminPageSeoController;
 use App\Http\Controllers\Api\v1\Admin\AdminSeoSettingController;
 use App\Http\Controllers\Api\v1\Admin\AdminSolutionPageController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\Api\v1\Public\ContactPageController;
 use App\Http\Controllers\Api\v1\Public\FooterController;
 use App\Http\Controllers\Api\v1\Public\HeaderController;
 use App\Http\Controllers\Api\v1\Public\PageSeoController;
+use App\Http\Controllers\Api\v1\Public\PublicSettingsController;
 use App\Http\Controllers\Api\v1\Public\SeoSettingController;
 use App\Http\Controllers\Api\v1\Public\CoreValuesController;
 use App\Http\Controllers\Api\v1\Public\DomainController;
@@ -97,15 +99,16 @@ Route::prefix('v1')->group(function () {
     Route::get('/seo-settings', [SeoSettingController::class, 'index']);
     Route::get('/pages-seo', [PageSeoController::class, 'index']);
     Route::get('/pages-seo/{pageKey}', [PageSeoController::class, 'show']);
+    Route::get('/site-config', [PublicSettingsController::class, 'index']);
 
-    Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1');
+    Route::post('/contact', [ContactController::class, 'store'])->middleware(['throttle:5,1', 'turnstile']);
     Route::post('/visitor-access/verify', [VisitorAccessController::class, 'verify'])->middleware('throttle:10,1');
 
     // ==========================================
     // 🔒 AUTHENTICATION & ADMIN ENDPOINTS
     // ==========================================
     Route::prefix('admin')->group(function () {
-        Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
+        Route::post('/login', [AuthController::class, 'login'])->middleware(['throttle:5,1', 'turnstile']);
         Route::post('/refresh-token', [AuthController::class, 'refresh'])->middleware('throttle:10,1');
         Route::middleware('auth:sanctum')->group(function () {
             Route::post('/logout', [AuthController::class, 'logout']);
@@ -122,6 +125,13 @@ Route::prefix('v1')->group(function () {
                 Route::put('/users/{user}', [AdminUserController::class, 'update']);
                 Route::post('/users/{user}', [AdminUserController::class, 'update']); // FormData-via-POST fallback
                 Route::delete('/users/{user}', [AdminUserController::class, 'destroy']);
+
+                // App settings (Turnstile protection + email/SMTP)
+                Route::get('/settings/turnstile', [AdminSettingsController::class, 'turnstile']);
+                Route::put('/settings/turnstile', [AdminSettingsController::class, 'updateTurnstile']);
+                Route::get('/settings/mail', [AdminSettingsController::class, 'mail']);
+                Route::put('/settings/mail', [AdminSettingsController::class, 'updateMail']);
+                Route::post('/settings/mail/test', [AdminSettingsController::class, 'testMail']);
             });
 
             // Admin CRUD Projects
