@@ -16,9 +16,9 @@ useSeo({
     "@context": "https://schema.org",
     "@type": "ContactPage",
     name: "Contact SiS Engineering & Sales",
-    url: `${resolveOrigin() || "https://sis.iptvpro.org"}/contact`,
+    url: `${resolveOrigin()}/contact`,
     mainEntity: {
-      "@id": `${resolveOrigin() || "https://sis.iptvpro.org"}/#organization`,
+      "@id": `${resolveOrigin()}/#organization`,
     },
   },
 }, "contact");

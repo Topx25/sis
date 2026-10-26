@@ -109,16 +109,6 @@ export const adminRoutes = [
         meta: { title: "Contact Messages | SiS Admin", requiresAuth: true },
       },
       {
-        path: "work-sample-credentials/:id?",
-        name: "admin-work-sample-credentials",
-        component: () =>
-          import("@/SIS-Dashboard/pages/sections/WorkSampleCredentials.vue"),
-        meta: {
-          title: "Work Sample Access | SiS Admin",
-          requiresAuth: true,
-        },
-      },
-      {
         path: "header",
         name: "admin-header",
         component: () =>

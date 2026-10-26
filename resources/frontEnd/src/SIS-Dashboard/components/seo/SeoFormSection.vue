@@ -32,7 +32,7 @@ const props = defineProps({
   },
   defaultDomain: {
     type: String,
-    default: "sis.iptvpro.org",
+    default: "",
   },
 });
 

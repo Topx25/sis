@@ -176,12 +176,6 @@ const navGroups = [
         soon: false,
       },
       {
-        label: "Work Sample Access",
-        icon: "key",
-        to: { name: "admin-work-sample-credentials" },
-        soon: false,
-      },
-      {
         label: "Global SEO",
         icon: "travel_explore",
         to: { name: "admin-seo-settings" },

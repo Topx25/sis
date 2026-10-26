@@ -544,7 +544,7 @@ function getHeroImageUrl(src) {
 
   // Uploaded/backend images
   if (normalizedSrc.startsWith("collections/")) {
-    const apiUrl = new URL(API_BASE);
+    const apiUrl = new URL(API_BASE || "/", window.location.origin);
 
     return `${apiUrl.origin}/storage/${normalizedSrc}`;
   }

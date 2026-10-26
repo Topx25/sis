@@ -109,12 +109,6 @@
         </p>
       </div>
     </a>
-
-    <AccessModal
-      v-if="modalOpen"
-      @close="modalOpen = false"
-      @unlocked="handleUnlocked"
-    />
   </div>
 </template>
 
@@ -196,12 +190,7 @@ function sampleUrl(sample) {
 }
 
 function handleClick(sample) {
-  if (sample.free || store.unlocked) {
-    window.open(sampleUrl(sample), "_blank", "noopener");
-    return;
-  }
-  pendingSample.value = sample;
-  modalOpen.value = true;
+  window.open(sampleUrl(sample), "_blank", "noopener");
 }
 
 function handleUnlocked() {

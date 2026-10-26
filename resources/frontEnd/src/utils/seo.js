@@ -332,7 +332,7 @@ export function clearJsonLd() {
  * Standard Schema.org Organization + WebSite Graph builder
  */
 export function buildOrganizationSchema(baseUrl = resolveOrigin()) {
-  const origin = baseUrl || resolveOrigin() || "https://sis.iptvpro.org";
+  const origin = baseUrl || resolveOrigin();
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -381,7 +381,7 @@ export function buildOrganizationSchema(baseUrl = resolveOrigin()) {
  * @param {string} baseUrl
  */
 export function buildBreadcrumbsSchema(items = [], baseUrl = resolveOrigin()) {
-  const origin = baseUrl || resolveOrigin() || "https://sis.iptvpro.org";
+  const origin = baseUrl || resolveOrigin();
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -398,7 +398,7 @@ export function buildBreadcrumbsSchema(items = [], baseUrl = resolveOrigin()) {
  * Standard Schema.org Service builder for Solutions
  */
 export function buildServiceSchema({ name, description, url, serviceType = "Industrial Automation & Engineering" }) {
-  const origin = resolveOrigin() || "https://sis.iptvpro.org";
+  const origin = resolveOrigin();
   return {
     "@context": "https://schema.org",
     "@type": "Service",

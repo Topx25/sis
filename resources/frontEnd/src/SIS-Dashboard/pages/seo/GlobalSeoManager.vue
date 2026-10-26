@@ -69,7 +69,7 @@ function notify(title, message, variant = "success") {
 
 // Form State
 const form = ref({
-  canonical_base_url: "https://sis.iptvpro.org",
+  canonical_base_url: "",
   site_name: {
     en: "SiS - Superior Integrated Solutions",
     ar: "حلول متكاملة متقدمة (SiS)",
@@ -121,7 +121,7 @@ async function loadSettings() {
   try {
     const data = await adminApi.getSeoSettings();
     if (data) {
-      form.value.canonical_base_url = data.canonical_base_url || "https://sis.iptvpro.org";
+      form.value.canonical_base_url = data.canonical_base_url || window.location.origin;
       const siteNameObj = typeof data.site_name === "object" && data.site_name ? data.site_name : null;
       const titleSuffixObj = typeof data.title_suffix === "object" && data.title_suffix ? data.title_suffix : null;
       const descObj = typeof data.default_meta_description === "object" && data.default_meta_description ? data.default_meta_description : null;
@@ -788,7 +788,7 @@ async function saveSettings() {
               v-model="form.canonical_base_url"
               type="url"
               required
-              placeholder="https://sis.iptvpro.org"
+              placeholder="https://www.example.com"
               class="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-mono text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
             />
 
