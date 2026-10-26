@@ -304,9 +304,18 @@ onMounted(async () => {
       class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900"
     >
       <h3 class="mb-1 text-lg font-bold text-slate-800 dark:text-slate-100">Cloudflare Turnstile Protection</h3>
-      <p class="mb-5 text-sm text-slate-500 dark:text-slate-400">
-        A captcha on the contact form and the admin login page. Get the keys from Cloudflare dashboard → Turnstile.
+      <p class="mb-3 text-sm text-slate-500 dark:text-slate-400">
+        A captcha on the contact form and the admin login page.
       </p>
+      <a
+        href="https://dash.cloudflare.com/?to=/:account/turnstile"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mb-5 inline-flex items-center gap-1.5 text-sm font-semibold text-sis-accent hover:underline"
+      >
+        <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+        Get your Site Key &amp; Secret Key from Cloudflare Turnstile
+      </a>
 
       <label class="mb-5 flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 dark:bg-slate-800">
         <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Enable protection</span>
