@@ -824,8 +824,7 @@ export function normalizeAboutHero() {
       cta_link: "/projects",
       image: "images/about-hero.webp",
       image_path: "images/about-hero.webp",
-      image_url:
-        "http://fried-robbing-professed.ngrok-free.dev/storage/images/about-hero.webp",
+      image_url: "images/about-hero.webp",
     },
   };
 }

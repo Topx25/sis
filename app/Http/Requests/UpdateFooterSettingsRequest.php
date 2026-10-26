@@ -19,7 +19,7 @@ class UpdateFooterSettingsRequest extends FormRequest
             'logo' => [
                 'nullable',
                 'file',
-                'mimes:jpeg,png,jpg,webp,svg',
+                'mimes:jpeg,png,jpg,webp',
                 'max:' . config('image.max_size_kb', 10240),
             ],
             'remove_logo' => ['nullable', 'boolean'],

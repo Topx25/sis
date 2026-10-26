@@ -19,7 +19,7 @@ class ProjectController extends Controller
     {
         $sectorSlug = $request->query('sector');
         $search = $request->query('search');
-        $perPage = (int) $request->query('per_page', 10);
+        $perPage = min(max((int) $request->query('per_page', 10), 1), 100);
 
         $projects = $this->projectService->getPaginatedProjects($sectorSlug, $search, $perPage);
 

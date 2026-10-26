@@ -8,5 +8,9 @@ class TimelineSection extends Model
 {
     protected $table = 'timeline_sections';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'tagline',
+        'title',
+        'title_highlight',
+    ];
 }

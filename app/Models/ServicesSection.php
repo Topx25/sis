@@ -8,6 +8,10 @@ class ServicesSection extends Model
 {
     protected $table = 'services_sections';
 
-
-    protected $guarded = [];
+    protected $fillable = [
+        'subtitle',
+        'title',
+        'title_highlight',
+        'description',
+    ];
 }

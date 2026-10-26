@@ -34,7 +34,7 @@ class AdminHeaderController extends Controller
     public function update(Request $request): JsonResponse
     {
         $request->validate([
-            'logo'           => ['nullable', 'file', 'mimes:jpeg,png,jpg,webp,svg', 'max:' . config('image.max_size_kb', 10240)],
+            'logo'           => ['nullable', 'file', 'mimes:jpeg,png,jpg,webp', 'max:' . config('image.max_size_kb', 10240)],
             'button_text'    => ['nullable', 'string', 'max:255'],
             'button_link'    => ['nullable', 'string', 'max:500'],
             'button_enabled' => ['nullable'],

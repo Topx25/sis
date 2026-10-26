@@ -112,7 +112,9 @@ trait ImageTrait
             return;
         }
 
-        $relative = ltrim(str_replace('/storage/', '', $path), '/');
+        // Normalize to a path relative to the public disk root, handling
+        // "storage/...", "/storage/...", and bare "projects/..." inputs alike.
+        $relative = preg_replace('#^storage/#', '', ltrim($path, '/'));
 
         if (Storage::disk('public')->exists($relative)) {
             Storage::disk('public')->delete($relative);

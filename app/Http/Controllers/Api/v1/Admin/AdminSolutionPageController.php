@@ -41,7 +41,7 @@ class AdminSolutionPageController extends Controller
         ];
 
         if ($request->hasFile('hero_image')) {
-            $rules['hero_image'] = ['file', 'mimes:jpeg,png,jpg,webp,svg', 'max:' . config('image.max_size_kb', 10240)];
+            $rules['hero_image'] = ['file', 'mimes:jpeg,png,jpg,webp', 'max:' . config('image.max_size_kb', 10240)];
         }
 
         $request->validate($rules);

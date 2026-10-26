@@ -34,7 +34,7 @@ class VisitorAccessController extends Controller
 
         $validCredential = null;
         foreach ($credentials as $credential) {
-            if (Hash::check($inputPassword, $credential->password) || $inputPassword === $credential->password) {
+            if (Hash::check($inputPassword, $credential->password)) {
                 $validCredential = $credential;
                 break;
             }

@@ -59,7 +59,7 @@ class AdminPageSeoController extends Controller
 
         if ($request->hasFile('og_image')) {
             $request->validate([
-                'og_image' => 'file|mimes:jpeg,png,jpg,gif,webp,svg|max:5120',
+                'og_image' => 'file|mimes:jpeg,png,jpg,gif,webp|max:5120',
             ]);
         }
 

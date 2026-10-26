@@ -15,22 +15,12 @@ class ExtractAdminToken
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Apache may strip the Authorization header; the SPA sends the token via
+        // X-Authorization as a fallback. No cookie-based auth is accepted (avoids CSRF).
         $value = $request->headers->get('Authorization')
             ?: $request->server->get('HTTP_AUTHORIZATION')
             ?: $request->server->get('REDIRECT_HTTP_AUTHORIZATION')
             ?: $request->headers->get('X-Authorization');
-
-        if (! $value && $request->headers->has('X-Auth-Token')) {
-            $value = 'Bearer '.$request->headers->get('X-Auth-Token');
-        }
-
-        if (! $value && $request->headers->has('X-Auth')) {
-            $value = 'Bearer '.$request->headers->get('X-Auth');
-        }
-
-        if (! $value && $request->cookies->has('drosat_token')) {
-            $value = 'Bearer '.$request->cookie('drosat_token');
-        }
 
         if (is_string($value) && trim($value) !== '') {
             $value = trim($value);

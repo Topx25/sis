@@ -107,7 +107,7 @@ class AdminSectionController extends Controller
         foreach ($fileFields as $field) {
             if ($request->hasFile($field)) {
                 $request->validate([
-                    $field => ['file', 'mimes:jpeg,png,jpg,webp,svg', 'max:' . config('image.max_size_kb', 10240)],
+                    $field => ['file', 'mimes:jpeg,png,jpg,webp', 'max:' . config('image.max_size_kb', 10240)],
                 ]);
 
                 $oldFilePath = $item->{$field} ?? null;
