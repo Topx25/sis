@@ -181,6 +181,12 @@ const navGroups = [
         to: { name: "admin-seo-settings" },
         soon: false,
       },
+      {
+        label: "Settings",
+        icon: "settings",
+        to: { name: "admin-settings" },
+        soon: false,
+      },
     ],
   },
 ];

@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import ToastNotification from "@/components/global/ToastNotification.vue";
+import TurnstileWidget from "@/components/common/TurnstileWidget.vue";
 import { adminAPI } from "@/SIS-Dashboard/api/index.js";
 import { saveSession, isSessionExpired } from "@/SIS-Dashboard/composables/useSessionManager.js";
 
@@ -14,6 +15,7 @@ const loading = ref(false);
 const showToast = ref(false);
 const toast = ref({ title: "", message: "", variant: "success" });
 const showPassword = ref(false);
+const turnstileToken = ref("");
 
 const sisLogoUrl = `${import.meta.env.BASE_URL}sis-logo.png`;
 
@@ -50,6 +52,7 @@ async function handleLogin() {
     const response = await adminAPI.login({
       email: email.value.trim(),
       password: password.value.trim(),
+      turnstile_token: turnstileToken.value,
     });
 
     // Store token and schedule 60-minute session expiry
@@ -226,6 +229,10 @@ function handleKeydown(event) {
                 </span>
               </button>
             </div>
+          </div>
+
+          <div class="flex justify-center">
+            <TurnstileWidget v-model="turnstileToken" />
           </div>
 
           <!-- Login Button -->

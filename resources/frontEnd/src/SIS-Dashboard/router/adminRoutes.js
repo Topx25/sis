@@ -150,6 +150,16 @@ export const adminRoutes = [
           requiresAuth: true,
         },
       },
+      {
+        path: "settings",
+        name: "admin-settings",
+        component: () =>
+          import("@/SIS-Dashboard/pages/settings/SettingsManager.vue"),
+        meta: {
+          title: "Settings | SiS Admin",
+          requiresAuth: true,
+        },
+      },
     ],
   },
 ];

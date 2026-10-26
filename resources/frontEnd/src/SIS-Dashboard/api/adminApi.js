@@ -860,4 +860,24 @@ deleteUseCase: (id) =>
       body: payload,
     });
   },
+
+  // ---- Settings module: users, profile, protection, email ----
+  getUsers: () => request("/admin/users"),
+  createUser: (data) => request("/admin/users", { method: "POST", body: data }),
+  updateUser: (id, data) =>
+    request(`/admin/users/${id}`, { method: "PUT", body: data }),
+  deleteUser: (id) => request(`/admin/users/${id}`, { method: "DELETE" }),
+
+  updateProfile: (data) =>
+    request("/admin/profile", { method: "PUT", body: data }),
+
+  getTurnstileSettings: () => request("/admin/settings/turnstile"),
+  updateTurnstileSettings: (data) =>
+    request("/admin/settings/turnstile", { method: "PUT", body: data }),
+
+  getMailSettings: () => request("/admin/settings/mail"),
+  updateMailSettings: (data) =>
+    request("/admin/settings/mail", { method: "PUT", body: data }),
+  sendTestMail: (to) =>
+    request("/admin/settings/mail/test", { method: "POST", body: { to } }),
 };

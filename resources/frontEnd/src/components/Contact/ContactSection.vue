@@ -351,6 +351,8 @@
                 ></textarea>
               </div>
 
+              <TurnstileWidget v-model="turnstileToken" />
+
               <button
                 type="submit"
                 :disabled="submitting"
@@ -416,6 +418,7 @@ import { API_ENABLED, useSiteStore } from "@/stores/useSiteStore";
 import { api } from "@/api/index.js";
 import ToastNotification from "@/components/global/ToastNotification.vue";
 import Skeleton from "@/components/common/Skeleton.vue";
+import TurnstileWidget from "@/components/common/TurnstileWidget.vue";
 import fallbackContact from "@/dummydata/contact";
 
 const siteStore = useSiteStore();
@@ -482,6 +485,7 @@ const websiteUrl = computed(() => {
 
 const form = reactive({ name: "", email: "", phone: "", company_name: "", message: "" });
 const submitting = ref(false);
+const turnstileToken = ref("");
 const showToast = ref(false);
 const toast = reactive({
   title: "Message Sent Successfully!",
@@ -499,6 +503,7 @@ async function handleSubmit() {
         phone: form.phone,
         company_name: form.company_name,
         message: form.message,
+        turnstile_token: turnstileToken.value,
       });
     } else {
       await new Promise((resolve) => setTimeout(resolve, 800));
