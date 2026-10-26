@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\v1\Admin\AdminSeoSettingController;
 use App\Http\Controllers\Api\v1\Admin\AdminSolutionPageController;
 use App\Http\Controllers\Api\v1\Admin\AdminTrustedPartnersPageController;
 use App\Http\Controllers\Api\v1\Admin\AdminUseCasesPageController;
+use App\Http\Controllers\Api\v1\Admin\AdminUserController;
 use App\Http\Controllers\Api\v1\Admin\AdminVisitorCredentialController;
 use App\Http\Controllers\Api\v1\Admin\AuthController;
 use App\Http\Controllers\Api\v1\Public\AboutController;
@@ -109,6 +110,19 @@ Route::prefix('v1')->group(function () {
         Route::middleware('auth:sanctum')->group(function () {
             Route::post('/logout', [AuthController::class, 'logout']);
             Route::get('/me', [AuthController::class, 'me']);
+
+            // Edit own account (any role)
+            Route::put('/profile', [AuthController::class, 'updateProfile']);
+            Route::post('/profile', [AuthController::class, 'updateProfile']); // FormData-via-POST fallback
+
+            // User management (admins only)
+            Route::middleware('role:admin')->group(function () {
+                Route::get('/users', [AdminUserController::class, 'index']);
+                Route::post('/users', [AdminUserController::class, 'store']);
+                Route::put('/users/{user}', [AdminUserController::class, 'update']);
+                Route::post('/users/{user}', [AdminUserController::class, 'update']); // FormData-via-POST fallback
+                Route::delete('/users/{user}', [AdminUserController::class, 'destroy']);
+            });
 
             // Admin CRUD Projects
             Route::get('/projects', [AdminProjectController::class, 'index']);

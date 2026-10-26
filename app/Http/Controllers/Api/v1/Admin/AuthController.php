@@ -8,6 +8,8 @@ use App\Services\AuthService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -23,6 +25,7 @@ class AuthController extends Controller
                 'id' => $result['user']->id,
                 'name' => $result['user']->name,
                 'email' => $result['user']->email,
+                'role' => $result['user']->role,
             ],
             'access_token' => $result['token'],
             'refresh_token' => $result['refresh_token'],
@@ -57,6 +60,37 @@ class AuthController extends Controller
             'id' => $request->user()->id,
             'name' => $request->user()->name,
             'email' => $request->user()->email,
+            'role' => $request->user()->role,
         ], 'User profile retrieved successfully.');
+    }
+
+    /**
+     * Update the currently authenticated user's own account (any role).
+     * Changing the password requires the current password.
+     */
+    public function updateProfile(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        $data = $request->validate([
+            'name'             => ['sometimes', 'string', 'max:255'],
+            'email'            => ['sometimes', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
+            'current_password' => ['required_with:password', 'current_password'],
+            'password'         => ['nullable', 'string', Password::min(8)],
+        ]);
+
+        unset($data['current_password']);
+        if (empty($data['password'])) {
+            unset($data['password']);
+        }
+
+        $user->update($data);
+
+        return $this->successResponse([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+        ], 'Profile updated successfully.');
     }
 }
