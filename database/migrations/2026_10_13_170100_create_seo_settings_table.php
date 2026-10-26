@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             // Canonical & verification configuration
-            $table->string('canonical_base_url', 255)->default('https://sis.iptvpro.org');
+            $table->string('canonical_base_url', 255)->default('');
             $table->string('google_site_verification', 255)->nullable();
             $table->string('bing_site_verification', 255)->nullable();
             $table->boolean('default_noindex')->default(false);

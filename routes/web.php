@@ -15,7 +15,7 @@ Route::get('/robots.txt', function () {
     if (is_file($path)) {
         return response(File::get($path), 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
     }
-    return response("User-agent: *\nAllow: /\nDisallow: /dashboard/\nDisallow: /api/\n\nSitemap: https://sis.iptvpro.org/sitemap.xml\n", 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
+    return response("User-agent: *\nAllow: /\nDisallow: /dashboard/\nDisallow: /api/\n\nSitemap: " . config('app.url') . "/sitemap.xml\n", 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
 });
 
 // ==========================================
