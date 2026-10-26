@@ -264,18 +264,22 @@ async function sendTest() {
 }
 
 /* ================= Integrations (chat + tracking code) ================= */
-const integrations = ref({ enabled: false, head_code: "", body_code: "", chat_code: "" });
+const integrations = ref({ enabled: false, head_code: "", body_code: "", chat_code: "", allowed_domains: "" });
 const savingIntegrations = ref(false);
+
+function applyIntegrations(data) {
+  integrations.value = {
+    enabled: !!data?.enabled,
+    head_code: data?.head_code || "",
+    body_code: data?.body_code || "",
+    chat_code: data?.chat_code || "",
+    allowed_domains: data?.allowed_domains || "",
+  };
+}
 
 async function loadIntegrations() {
   try {
-    const data = await adminApi.getIntegrations();
-    integrations.value = {
-      enabled: !!data?.enabled,
-      head_code: data?.head_code || "",
-      body_code: data?.body_code || "",
-      chat_code: data?.chat_code || "",
-    };
+    applyIntegrations(await adminApi.getIntegrations());
   } catch (err) {
     notify("Error", err.message || "Could not load integrations.", "error");
   }
@@ -289,13 +293,9 @@ async function saveIntegrations() {
       head_code: integrations.value.head_code,
       body_code: integrations.value.body_code,
       chat_code: integrations.value.chat_code,
+      allowed_domains: integrations.value.allowed_domains,
     });
-    integrations.value = {
-      enabled: !!data?.enabled,
-      head_code: data?.head_code || "",
-      body_code: data?.body_code || "",
-      chat_code: data?.chat_code || "",
-    };
+    applyIntegrations(data);
     notify("Saved", "Integrations saved. They appear on the public site.", "success");
   } catch (err) {
     notify("Save failed", err.message || "Could not save integrations.", "error");
@@ -659,9 +659,23 @@ onMounted(async () => {
         </div>
       </div>
 
+      <div class="mt-4">
+        <label class="mb-1 block text-sm font-medium text-slate-600 dark:text-slate-300">
+          Allowed external domains
+          <span class="text-xs text-slate-400">(for the security policy — one per line or comma-separated)</span>
+        </label>
+        <textarea
+          v-model="integrations.allowed_domains"
+          rows="3"
+          dir="ltr"
+          placeholder="*.fariek.com&#10;www.googletagmanager.com&#10;www.google-analytics.com"
+          class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-mono text-xs dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+        ></textarea>
+      </div>
+
       <div class="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800 dark:border-amber-800/40 dark:bg-amber-900/20 dark:text-amber-300">
         <span class="material-symbols-outlined align-middle text-[16px]">info</span>
-        Google site/Bing verification also lives in <b>Global SEO</b>. External scripts load only from allowed domains (CSP) — if a widget doesn't appear, tell the developer the provider so its domain can be allowed.
+        The site has a strict security policy (CSP). List every domain your pasted code loads from (e.g. the chat provider) above — the policy updates automatically on save, so nothing is hard-coded. Google/Bing verification also lives in <b>Global SEO</b>.
       </div>
 
       <div class="mt-6">

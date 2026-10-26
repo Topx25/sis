@@ -136,18 +136,26 @@ class AdminSettingsController extends Controller
     public function updateIntegrations(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'enabled'   => ['required', 'boolean'],
-            'head_code' => ['nullable', 'string', 'max:20000'],
-            'body_code' => ['nullable', 'string', 'max:20000'],
-            'chat_code' => ['nullable', 'string', 'max:20000'],
+            'enabled'         => ['required', 'boolean'],
+            'head_code'       => ['nullable', 'string', 'max:20000'],
+            'body_code'       => ['nullable', 'string', 'max:20000'],
+            'chat_code'       => ['nullable', 'string', 'max:20000'],
+            'allowed_domains' => ['nullable', 'string', 'max:2000'],
         ]);
 
         AppSetting::setValue('integrations', 'enabled', $data['enabled'] ? '1' : '0');
         AppSetting::setValue('integrations', 'head_code', $data['head_code'] ?? '');
         AppSetting::setValue('integrations', 'body_code', $data['body_code'] ?? '');
         AppSetting::setValue('integrations', 'chat_code', $data['chat_code'] ?? '');
+        AppSetting::setValue('integrations', 'allowed_domains', $data['allowed_domains'] ?? '');
 
-        return $this->successResponse($this->integrationsPayload(), 'Integrations saved successfully.');
+        // Rebuild the public CSP from the admin-listed domains (no hard-coded provider).
+        $cspUpdated = \App\Services\CspManager::rebuild();
+
+        $payload = $this->integrationsPayload();
+        $payload['csp_updated'] = $cspUpdated;
+
+        return $this->successResponse($payload, 'Integrations saved successfully.');
     }
 
     private function integrationsPayload(): array
@@ -155,10 +163,11 @@ class AdminSettingsController extends Controller
         $i = AppSetting::group('integrations');
 
         return [
-            'enabled'   => ($i['enabled'] ?? '0') === '1',
-            'head_code' => $i['head_code'] ?? '',
-            'body_code' => $i['body_code'] ?? '',
-            'chat_code' => $i['chat_code'] ?? '',
+            'enabled'         => ($i['enabled'] ?? '0') === '1',
+            'head_code'       => $i['head_code'] ?? '',
+            'body_code'       => $i['body_code'] ?? '',
+            'chat_code'       => $i['chat_code'] ?? '',
+            'allowed_domains' => $i['allowed_domains'] ?? '',
         ];
     }
 }
