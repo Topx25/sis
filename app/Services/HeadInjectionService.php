@@ -32,7 +32,7 @@ class HeadInjectionService
     public function resolveMetadata(string $path, ?string $locale = 'en'): array
     {
         $setting = SeoSetting::instance();
-        $baseUrl = rtrim($setting->canonical_base_url ?: 'https://sis.iptvpro.org', '/');
+        $baseUrl = rtrim($setting->canonical_base_url ?: config('app.url'), '/');
         $siteName = $setting->getTranslation('site_name', $locale) ?: 'SiS - Superior Integrated Solutions';
         $titleSuffix = $setting->getTranslation('title_suffix', $locale) ?: ' | SiS';
         $defaultDesc = $setting->getTranslation('default_meta_description', $locale)

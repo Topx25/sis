@@ -84,7 +84,7 @@ class AdminSeoSettingController extends Controller
 
         // 4. Process Scalar Directives
         if ($request->has('canonical_base_url')) {
-            $setting->canonical_base_url = rtrim($request->input('canonical_base_url') ?: 'https://sis.iptvpro.org', '/');
+            $setting->canonical_base_url = rtrim($request->input('canonical_base_url') ?: config('app.url'), '/');
         }
 
         if ($request->has('google_site_verification')) {

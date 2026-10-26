@@ -49,7 +49,7 @@ class SeoSetting extends Model
             return static::firstOrCreate(
                 ['id' => 1],
                 [
-                    'canonical_base_url' => 'https://sis.iptvpro.org',
+                    'canonical_base_url' => config('app.url'),
                     'google_site_verification' => null,
                     'bing_site_verification' => null,
                     'default_noindex' => false,
@@ -69,10 +69,10 @@ class SeoSetting extends Model
                         'en' => 'industrial automation, OT, IT, SCADA, PLC, DCS, IIoT, digital transformation, MENA, Egypt',
                         'ar' => 'أتمتة صناعية, تحول رقمي, أنظمة تحكم, سكادا, إنترنت الأشياء الصناعي, مصر, الشرق الأوسط',
                     ],
-                    'default_og_image' => 'https://sis.iptvpro.org/sis-logo.png',
+                    'default_og_image' => config('app.url') . '/sis-logo.png',
                     'organization_legal_name' => 'Superior Integrated Solutions S.A.E.',
                     'organization_phone' => '+20 1007 568 651',
-                    'organization_email' => 'sales@sis-holding.com',
+                    'organization_email' => 'sales@sis-eg.org',
                     'social_links' => [
                         'https://www.linkedin.com/company/superior-for-integrated-solutions',
                     ],
@@ -81,14 +81,14 @@ class SeoSetting extends Model
         } catch (\Throwable $e) {
             // Return an in-memory fallback instance so application never crashes if table is not yet migrated
             $fallback = new static([
-                'canonical_base_url' => 'https://sis.iptvpro.org',
+                'canonical_base_url' => config('app.url'),
                 'google_site_verification' => null,
                 'bing_site_verification' => null,
                 'default_noindex' => false,
-                'default_og_image' => 'https://sis.iptvpro.org/sis-logo.png',
+                'default_og_image' => config('app.url') . '/sis-logo.png',
                 'organization_legal_name' => 'Superior Integrated Solutions S.A.E.',
                 'organization_phone' => '+20 1007 568 651',
-                'organization_email' => 'sales@sis-holding.com',
+                'organization_email' => 'sales@sis-eg.org',
                 'social_links' => [
                     'https://www.linkedin.com/company/superior-for-integrated-solutions',
                 ],

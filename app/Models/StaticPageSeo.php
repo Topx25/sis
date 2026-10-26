@@ -220,7 +220,7 @@ class StaticPageSeo
 
         $seo = self::getMetadataRecord($config['id']);
         $globalSetting = SeoSetting::instance();
-        $baseUrl = rtrim($globalSetting->canonical_base_url ?: 'https://sis.iptvpro.org', '/');
+        $baseUrl = rtrim($globalSetting->canonical_base_url ?: config('app.url'), '/');
 
         // Title resolution
         $manualTitle = $seo?->getTranslation('meta_title', $locale, false)

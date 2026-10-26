@@ -151,7 +151,7 @@ trait HasSeoMetadata
     {
         $seo = $this->safeSeoMetadata();
         $settings = SeoSetting::instance();
-        $baseUrl = $settings->canonical_base_url ?: 'https://sis.iptvpro.org';
+        $baseUrl = $settings->canonical_base_url ?: config('app.url');
 
         // 1. Resolve Title
         $title = $seo?->getTranslation('meta_title', $locale, false)

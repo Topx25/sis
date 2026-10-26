@@ -97,7 +97,7 @@ class SitemapController extends Controller
     protected function generateSitemapXml(): string
     {
         $setting = SeoSetting::instance();
-        $baseUrl = rtrim($setting->canonical_base_url ?: 'https://sis.iptvpro.org', '/');
+        $baseUrl = rtrim($setting->canonical_base_url ?: config('app.url'), '/');
         $defaultNoindex = (bool) $setting->default_noindex;
 
         $urls = [];
@@ -182,7 +182,7 @@ class SitemapController extends Controller
      */
     public function generateFallbackSitemapXml(): string
     {
-        $baseUrl = 'https://sis.iptvpro.org';
+        $baseUrl = config('app.url');
         $nowIso = now()->toIso8601String();
 
         $urls = [
