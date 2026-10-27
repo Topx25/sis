@@ -16,53 +16,20 @@ class SitemapController extends Controller
      */
     public function index(): Response
     {
-        $status = 'cached';
-        $xml = null;
+        // Generated fresh per request so the <loc> URLs always match the current
+        // host (the same app serves multiple domains). Not cached in a shared store
+        // and not written to a single physical file, which would leak one domain's
+        // host to the others. Sitemaps are low-traffic (crawlers), so this is fine.
+        $status = 'generated';
 
         try {
-            $xml = Cache::get('sis_sitemap_xml');
+            $xml = $this->generateSitemapXml();
         } catch (\Throwable $e) {
-            Log::warning('Sitemap cache retrieval bypassed: ' . $e->getMessage());
-        }
-
-        if (empty($xml)) {
-            try {
-                $xml = $this->generateSitemapXml();
-                $status = 'generated';
-
-                // Cache for 1 hour on 100% successful dynamic generation
-                try {
-                    Cache::put('sis_sitemap_xml', $xml, 3600);
-                } catch (\Throwable $ce) {
-                    Log::warning('Sitemap cache storage bypassed: ' . $ce->getMessage());
-                }
-
-                // Synchronize single canonical physical file in public_path('sitemap.xml')
-                $this->syncPhysicalFile($xml);
-
-            } catch (\Throwable $e) {
-                Log::error('SitemapController dynamic XML generation failed: ' . $e->getMessage(), [
-                    'exception' => $e,
-                ]);
-
-                // 1. Attempt to serve the last known good physical file from disk
-                $publicPath = public_path('sitemap.xml');
-                if (is_file($publicPath) && filesize($publicPath) > 100) {
-                    $diskContent = @file_get_contents($publicPath);
-                    if (!empty($diskContent) && str_starts_with(trim($diskContent), '<?xml')) {
-                        $xml = $diskContent;
-                        $status = 'disk-fallback';
-                        Log::warning('SitemapController serving last known good disk-cached sitemap.xml.');
-                    }
-                }
-
-                // 2. If no valid disk file exists, generate minimal emergency fallback
-                if (empty($xml)) {
-                    $xml = $this->generateFallbackSitemapXml();
-                    $status = 'emergency-fallback';
-                    Log::error('SitemapController serving minimal emergency fallback sitemap (database unavailable).');
-                }
-            }
+            Log::error('SitemapController dynamic XML generation failed: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+            $xml = $this->generateFallbackSitemapXml();
+            $status = 'emergency-fallback';
         }
 
         return response($xml, 200, [
@@ -97,7 +64,7 @@ class SitemapController extends Controller
     protected function generateSitemapXml(): string
     {
         $setting = SeoSetting::instance();
-        $baseUrl = rtrim($setting->canonical_base_url ?: config('app.url'), '/');
+        $baseUrl = rtrim($setting->canonical_base_url ?: ('https://' . request()->getHttpHost()), '/');
         $defaultNoindex = (bool) $setting->default_noindex;
 
         $urls = [];
@@ -182,7 +149,7 @@ class SitemapController extends Controller
      */
     public function generateFallbackSitemapXml(): string
     {
-        $baseUrl = config('app.url');
+        $baseUrl = 'https://' . request()->getHttpHost();
         $nowIso = now()->toIso8601String();
 
         $urls = [

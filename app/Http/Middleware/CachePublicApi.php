@@ -79,6 +79,12 @@ class CachePublicApi
             return false;
         }
 
+        // Host-varying SEO endpoints must stay fresh per domain (canonical/base URL
+        // depends on the current host); never share them across domains via cache.
+        if ($path === 'v1/seo-settings') {
+            return false;
+        }
+
         $contentType = (string) $response->headers->get('Content-Type');
 
         return str_contains($contentType, 'application/json');

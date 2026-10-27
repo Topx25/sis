@@ -8,7 +8,6 @@ use App\Models\SeoSetting;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class SeoSettingController extends Controller
 {
@@ -16,14 +15,14 @@ class SeoSettingController extends Controller
 
     /**
      * Retrieve public SEO settings and site identity metadata.
+     *
+     * Resolved fresh per request (not cached) because the canonical base URL is
+     * derived from the current host, so the same app serves correct values on
+     * any domain. The payload is tiny (one settings row), so this is cheap.
      */
     public function index(Request $request): JsonResponse
     {
-        $locale = $request->query('lang') ?: app()->getLocale() ?: 'en';
-
-        $data = Cache::remember("api_seo_settings_{$locale}", 3600, function () use ($request) {
-            return (new SeoSettingResource(SeoSetting::instance()))->resolve($request);
-        });
+        $data = (new SeoSettingResource(SeoSetting::instance()))->resolve($request);
 
         return $this->successResponse(
             $data,

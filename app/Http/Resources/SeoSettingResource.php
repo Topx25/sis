@@ -17,7 +17,7 @@ class SeoSettingResource extends JsonResource
 
         $base = [
             'id' => $this->id,
-            'canonical_base_url' => $this->canonical_base_url ?? config('app.url'),
+            'canonical_base_url' => $this->canonical_base_url ?: ('https://' . $request->getHttpHost()),
             'google_site_verification' => $this->google_site_verification,
             'bing_site_verification' => $this->bing_site_verification,
             'default_noindex' => (bool) ($this->default_noindex ?? false),
