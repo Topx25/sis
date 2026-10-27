@@ -73,22 +73,17 @@ export function resolveImageUrl(src) {
         url.protocol = "https:";
       }
 
-      // If the URL contains a local/private host (e.g. 192.168.1.159:8000 or localhost from Laravel asset()),
-      // but the client is in production or has a different API origin, rewrite host & protocol to apiOrigin
-      if (apiOrigin) {
-        const apiUrl = new URL(apiOrigin);
-        if (
-          isLocalOrPrivateHost(url.hostname) &&
-          !isLocalOrPrivateHost(apiUrl.hostname)
-        ) {
-          url.protocol = apiUrl.protocol;
-          url.host = apiUrl.host;
-        } else if (isHttpsPage && apiUrl.protocol === "https:" && url.pathname.includes("/storage/")) {
-          url.protocol = apiUrl.protocol;
-          if (isLocalOrPrivateHost(url.hostname) && !isLocalOrPrivateHost(apiUrl.hostname)) {
-            url.host = apiUrl.host;
-          }
-        }
+      // Site-managed storage assets: always serve them from the domain currently
+      // showing the site, so the same content works on ANY domain it is served
+      // from (e.g. an addon domain) regardless of the host baked into the stored
+      // URL. External (non-storage) images are left untouched.
+      if (
+        url.pathname.includes("/storage/") &&
+        typeof window !== "undefined" &&
+        window.location?.host
+      ) {
+        url.protocol = window.location.protocol;
+        url.host = window.location.host;
       }
 
       if (url.pathname.includes("training-consulting.jpg")) {
