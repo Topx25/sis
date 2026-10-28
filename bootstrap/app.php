@@ -33,6 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\EnsureRole::class,
             'turnstile' => \App\Http\Middleware\VerifyTurnstile::class,
+            'admin.activity' => \App\Http\Middleware\LogAdminActivity::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

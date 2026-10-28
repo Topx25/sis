@@ -110,7 +110,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('admin')->group(function () {
         Route::post('/login', [AuthController::class, 'login'])->middleware(['throttle:5,1', 'turnstile']);
         Route::post('/refresh-token', [AuthController::class, 'refresh'])->middleware('throttle:10,1');
-        Route::middleware('auth:sanctum')->group(function () {
+        Route::middleware(['auth:sanctum', 'admin.activity'])->group(function () {
             Route::post('/logout', [AuthController::class, 'logout']);
             Route::get('/me', [AuthController::class, 'me']);
 
@@ -134,6 +134,7 @@ Route::prefix('v1')->group(function () {
                 Route::post('/settings/mail/test', [AdminSettingsController::class, 'testMail']);
                 Route::get('/settings/integrations', [AdminSettingsController::class, 'integrations']);
                 Route::put('/settings/integrations', [AdminSettingsController::class, 'updateIntegrations']);
+                Route::get('/activity-logs', [AdminSettingsController::class, 'activityLogs']);
             });
 
             // Admin CRUD Projects

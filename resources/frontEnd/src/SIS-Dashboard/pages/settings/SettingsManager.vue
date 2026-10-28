@@ -24,6 +24,7 @@ const allTabs = [
   { id: "users", label: "Users", icon: "group", adminOnly: true },
   { id: "email", label: "Email", icon: "mail", adminOnly: true },
   { id: "integrations", label: "Integrations", icon: "code", adminOnly: true },
+  { id: "activity", label: "Activity", icon: "history", adminOnly: true },
   { id: "seo", label: "SEO", icon: "travel_explore", adminOnly: true },
 ];
 const tabs = computed(() =>
@@ -304,12 +305,33 @@ async function saveIntegrations() {
   }
 }
 
+/* ================= Activity log ================= */
+const activityLogs = ref([]);
+const loadingActivity = ref(false);
+
+async function loadActivity() {
+  loadingActivity.value = true;
+  try {
+    const res = await adminApi.getActivityLogs();
+    activityLogs.value = Array.isArray(res?.data) ? res.data : (Array.isArray(res) ? res : []);
+  } catch (err) {
+    notify("Error", err.message || "Could not load activity log.", "error");
+  } finally {
+    loadingActivity.value = false;
+  }
+}
+
+function formatWhen(ts) {
+  if (!ts) return "";
+  try { return new Date(ts).toLocaleString(); } catch { return ts; }
+}
+
 /* ---------------- init ---------------- */
 onMounted(async () => {
   await loadProfile();
   if (isAdmin.value) {
     activeTab.value = "protection";
-    await Promise.all([loadTurnstile(), loadUsers(), loadMail(), loadIntegrations()]);
+    await Promise.all([loadTurnstile(), loadUsers(), loadMail(), loadIntegrations(), loadActivity()]);
   }
 });
 </script>
@@ -683,6 +705,48 @@ onMounted(async () => {
           <span class="material-symbols-outlined text-[18px]">save</span>
           {{ savingIntegrations ? "Saving..." : "Save" }}
         </button>
+      </div>
+    </section>
+
+    <!-- ================= Activity log ================= -->
+    <section
+      v-if="activeTab === 'activity' && isAdmin"
+      class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900"
+    >
+      <h3 class="mb-1 text-lg font-bold text-slate-800 dark:text-slate-100">Activity log</h3>
+      <p class="mb-5 text-sm text-slate-500 dark:text-slate-400">
+        A trail of changes made in the dashboard (who, what, when).
+      </p>
+
+      <div v-if="loadingActivity" class="py-8 text-center text-sm text-slate-400">Loading...</div>
+
+      <div v-else-if="activityLogs.length === 0" class="py-8 text-center text-sm text-slate-400">
+        No activity recorded yet.
+      </div>
+
+      <div v-else class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="border-b border-slate-200 text-slate-500 dark:border-slate-700">
+              <th class="px-3 py-2 font-semibold">When</th>
+              <th class="px-3 py-2 font-semibold">User</th>
+              <th class="px-3 py-2 font-semibold">Action</th>
+              <th class="px-3 py-2 font-semibold">IP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="log in activityLogs" :key="log.id" class="border-b border-slate-100 dark:border-slate-800">
+              <td class="whitespace-nowrap px-3 py-2.5 text-slate-500 dark:text-slate-400">{{ formatWhen(log.created_at) }}</td>
+              <td class="px-3 py-2.5 text-slate-800 dark:text-slate-100">{{ log.user_name || "—" }}</td>
+              <td class="px-3 py-2.5">
+                <span class="mr-2 rounded px-1.5 py-0.5 text-xs font-bold"
+                  :class="log.method === 'DELETE' ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-600'">{{ log.method }}</span>
+                <span class="font-mono text-xs text-slate-600 dark:text-slate-300" dir="ltr">{{ log.path }}</span>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 dark:text-slate-400" dir="ltr">{{ log.ip || "—" }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 

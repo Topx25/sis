@@ -170,4 +170,17 @@ class AdminSettingsController extends Controller
             'allowed_domains' => $i['allowed_domains'] ?? '',
         ];
     }
+
+    // ---- Activity log (audit trail of admin actions) ----
+
+    public function activityLogs(Request $request): JsonResponse
+    {
+        $perPage = min(max((int) $request->query('per_page', 30), 1), 100);
+
+        $logs = \App\Models\ActivityLog::query()
+            ->orderByDesc('id')
+            ->paginate($perPage);
+
+        return $this->successResponse($logs, 'Activity logs retrieved successfully.');
+    }
 }

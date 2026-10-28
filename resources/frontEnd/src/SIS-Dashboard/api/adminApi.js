@@ -884,4 +884,7 @@ deleteUseCase: (id) =>
   getIntegrations: () => request("/admin/settings/integrations"),
   updateIntegrations: (data) =>
     request("/admin/settings/integrations", { method: "PUT", body: data }),
+
+  getActivityLogs: (page = 1) =>
+    request(`/admin/activity-logs?page=${page}`),
 };
